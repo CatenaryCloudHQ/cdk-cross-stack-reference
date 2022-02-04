@@ -1,6 +1,6 @@
-const { AwsCdkTypeScriptApp } = require('projen');
+const { awscdk } = require('projen');
+const project = new awscdk.AwsCdkTypeScriptApp({
 
-const project = new AwsCdkTypeScriptApp({
   author: 'Catenary.Cloud',
   authorAddress: 'hi@catenary.cloud',
   defaultReleaseBranch: 'main',
@@ -14,7 +14,12 @@ const project = new AwsCdkTypeScriptApp({
   mergify: false,
   pullRequestTemplate: false,
   projenUpgrade: false,
-  workflows: false
+  workflows: false,
+  github: false,
+  license: false,
+  staleBranches: false,
 });
 
 project.synth();
+
+
