@@ -1,23 +1,28 @@
-import { App, Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
+import { App, CfnOutput, Stack, StackProps } from "aws-cdk-lib";
+import { Construct } from "constructs";
+import { producerStack } from "./producer";
+import { IBucket } from "aws-cdk-lib/aws-s3";
+import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 
-export class MyStack extends Stack {
-  constructor(scope: Construct, id: string, props: StackProps = {}) {
+interface consumerStackProps extends StackProps {
+  readonly bucket: IBucket;
+}
+
+export class consumerStack extends Stack {
+  constructor(scope: Construct, id: string, props: consumerStackProps) {
     super(scope, id, props);
-
-    // define resources here...
+  
+    new BucketDeployment(this, 'uploadFile', {
+      sources: [Source.asset('./src')],
+      destinationBucket: props.bucket
+    });
+    new CfnOutput(this, 'bucketName', { value: props.bucket.bucketName });
   }
 }
 
-// for development, use account/region from cdk cli
-const devEnv = {
-  account: process.env.CDK_DEFAULT_ACCOUNT,
-  region: process.env.CDK_DEFAULT_REGION,
-};
-
 const app = new App();
 
-new MyStack(app, 'my-stack-dev', { env: devEnv });
-// new MyStack(app, 'my-stack-prod', { env: prodEnv });
+const bucketProducer = new producerStack(app, "producer");
+new consumerStack(app, "consumer", { bucket: bucketProducer.bucket });
 
 app.synth();

@@ -1,12 +1,20 @@
-const { awscdk } = require('projen');
-const project = new awscdk.AwsCdkTypeScriptApp({
-  cdkVersion: '2.1.0',
-  defaultReleaseBranch: 'main',
-  name: 'cdk-cross-stack-reference',
+const { AwsCdkTypeScriptApp } = require('projen');
 
-  // deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],             /* Build dependencies for this module. */
-  // packageName: undefined,  /* The "name" in package.json. */
+const project = new AwsCdkTypeScriptApp({
+  author: 'Catenary.Cloud',
+  authorAddress: 'hi@catenary.cloud',
+  defaultReleaseBranch: 'main',
+  description: 'CDK app to show cross reference of Cloudformation outputs',
+  cdkVersion: '2.8.0',
+  defaultReleaseBranch: 'main',
+  name: 'cdk-cross-reference',
+  buildWorkflow: false,
+  rebuildBot: false,
+  releaseWorkflow: false,
+  mergify: false,
+  pullRequestTemplate: false,
+  projenUpgrade: false,
+  workflows: false
 });
+
 project.synth();
