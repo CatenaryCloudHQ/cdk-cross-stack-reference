@@ -1,6 +1,8 @@
 # CDK cross-stack 
 
-This is CDK app to show how cross-reference stack outputs. There are two stacks: one creates S3 bucket, another uploads a file into the bucket.
+This is CDK app to show how cross-reference stack outputs.
+
+There are two stacks: one creates S3 bucket - [src/producer.ts](src/producer.ts), and the `main.ts` uploads a file into the bucket created by producer stack.
 
 # Deploy
 
