@@ -1,28 +1,26 @@
 import { App, CfnOutput, Stack, StackProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { producerStack } from "./producer";
-import { IBucket } from "aws-cdk-lib/aws-s3";
+import { Bucket } from "aws-cdk-lib/aws-s3";
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 
-interface consumerStackProps extends StackProps {
-  readonly bucket: IBucket;
-}
-
 export class consumerStack extends Stack {
-  constructor(scope: Construct, id: string, props: consumerStackProps) {
+  constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
   
+    const bucket = new Bucket(this, 'Bucket');
+
     new BucketDeployment(this, 'uploadFile', {
       sources: [Source.asset('./src')],
-      destinationBucket: props.bucket
+      destinationBucket: bucket
     });
-    new CfnOutput(this, 'bucketName', { value: props.bucket.bucketName });
+    new CfnOutput(this, 'bucketName', { value: bucket.bucketName });
   }
 }
 
 const app = new App();
 
-const bucketProducer = new producerStack(app, "producer");
-new consumerStack(app, "consumer", { bucket: bucketProducer.bucket });
+new producerStack(app, "producer");
+new consumerStack(app, "consumer");
 
 app.synth();

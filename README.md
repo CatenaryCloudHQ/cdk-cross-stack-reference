@@ -34,6 +34,12 @@ arn:aws:cloudformation:us-east-1:xxx:stack/producer/8849daf0-8567-11ec-ba51-0e9a
 ✨  Total time: 7.96s
 ```
 
+# Remove Cloudformation output dependency
+
+Checkout branch that removes stacks dependency with `git checkout remove-dependency`. Check changes with `git diff main` 
+
+Run `cdk deploy --all`, the consumer stack should use own S3 bucket.  
+
 # Project boostrap
 
 This repository was created with `npx projen new awscdk-app-ts`
